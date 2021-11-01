@@ -6,7 +6,7 @@ pygame.init()
 FPS = 30
 screen = pygame.display.set_mode((600, 600))
 
-rect(screen, 'grey', (0, 0, 1280, 720)) #Заливка
+screen.fill('grey') #Заливка
 
 circle(screen, 'yellow', (300, 300), 100) #Голова
 circle(screen, 0, (300, 300), 100, 1) #Голова_обводка
