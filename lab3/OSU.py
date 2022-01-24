@@ -14,7 +14,7 @@ FPS = 120
 
 x1, x2, x3 = width / 2, width / 2, width / 2      # X координаты шаров
 y1, y2, y3 = length / 2, length / 2, length / 2   # Y координаты шаров
-x1_move, x2_move, x3_move = 5, 8, 5   # X смещения шаров
+x1_move, x2_move, x3_move = 5, 8, 7   # X смещения шаров
 y1_move, y2_move, y3_move = 8, 5, 3   # Y смещения шаров
 r = 50   # Радиус шаров
 
@@ -24,7 +24,16 @@ x4_move = 10   # X смещение квадрата
 n = 0   # Счётчик
 top = 50   # Рекорд
 t = 0   # Время
-limit = 6000
+limit = 6000   # Ограничение по времени
+
+
+def score():   # Запись в файл
+    print('Score:', n)
+    if n > top:
+        f = open('Top.txt', 'a', encoding='utf8')
+        print(name + ': ', n, file=f)
+    quit()
+
 
 while True:
     clock.tick(FPS)
@@ -63,12 +72,8 @@ while True:
         x4_move = -x4_move
 
     for event in pygame.event.get():   # Проверка на выход
-        if event.type == pygame.QUIT or t > limit:
-            print('Score:', n)
-            if n > top:   # Запись в файл
-                f = open('Top.txt', 'a', encoding='utf8')
-                print(name + ': ', n, file=f)
-            quit()
+        if event.type == pygame.QUIT:
+            score()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:   # Проверка на попадания
             A = pygame.mouse.get_pos()
@@ -89,4 +94,6 @@ while True:
 
     t += 1
     pygame.display.update()
-    print(t)
+
+    if t > limit:   # Проверка на время
+        score()
