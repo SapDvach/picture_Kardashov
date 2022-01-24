@@ -1,17 +1,16 @@
 import pygame
 from pygame.draw import *
-import sys
 
 name = str(input('Your name: '))
 
-width, length = 1200, 900   # Размер экрана
+width, length = 1920, 1080   # Размер экрана
 
 pygame.init()
 pygame.display.set_caption('OSU')   # Название игры
 screen = pygame.display.set_mode((width, length))
 clock = pygame.time.Clock()
 
-FPS = 60
+FPS = 120
 
 x1, x2, x3 = width / 2, width / 2, width / 2      # X координаты шаров
 y1, y2, y3 = length / 2, length / 2, length / 2   # Y координаты шаров
@@ -23,6 +22,9 @@ x4, y4 = width / 2 - 10, length / 2 - 10   # Координаты квадрат
 x4_move = 10   # X смещение квадрата
 
 n = 0   # Счётчик
+top = 50   # Рекорд
+t = 0   # Время
+limit = 6000
 
 while True:
     clock.tick(FPS)
@@ -57,21 +59,18 @@ while True:
     if ball3.topleft[1] <= 0 or ball3.bottomright[1] >= length:
         y3_move = -y3_move
 
-    if sqrt.topleft[0] <= 0 or sqrt.bottomright[0] >= 1200:   # Отскоки квадрата от стен
+    if sqrt.topleft[0] <= 0 or sqrt.bottomright[0] >= width:   # Отскоки квадрата от стен
         x4_move = -x4_move
 
     for event in pygame.event.get():   # Проверка на выход
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or t > limit:
             print('Score:', n)
-            if n > 20:   # Запись в файл
-                out = str(name) + ': ' + str(n)
-                f = open('Top.txt', 'a')
-                f.write('\n')
-                f.write(out)
-                f.close()
+            if n > top:   # Запись в файл
+                f = open('Top.txt', 'a', encoding='utf8')
+                print(name + ': ', n, file=f)
             quit()
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:   # Проверка на попадание
+        elif event.type == pygame.MOUSEBUTTONDOWN:   # Проверка на попадания
             A = pygame.mouse.get_pos()
             x_A = A[0]
             y_A = A[1]
@@ -88,4 +87,6 @@ while True:
             else:
                 print('Miss')
 
+    t += 1
     pygame.display.update()
+    print(t)
