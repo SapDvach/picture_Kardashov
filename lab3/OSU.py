@@ -30,8 +30,21 @@ limit = 6000   # Ограничение по времени
 def score():   # Запись в файл
     print('Score:', n)
     if n > top:
+        k = 0
         f = open('Top.txt', 'a', encoding='utf8')
-        print(name + ': ', n, file=f)
+        print(name, n, file=f)
+        f.close()
+        fin = open('Top.txt', 'r', encoding='utf8')
+        results = []
+        for line in fin:
+            spl = line.split()
+            results.append((spl[0], int(spl[1])))
+            k += 1
+        results.sort(key=lambda x: x[1], reverse=True)
+        fout = open('Top.txt', 'w', encoding='utf8')
+        for i in range(k):
+            print(results[i][0], results[i][1], file=fout)
+        fout.close()
     quit()
 
 
